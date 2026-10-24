@@ -184,7 +184,7 @@ internal static class ServerQuery
             udp.Connect(ip, Config.ServerPort);
             var sw = Stopwatch.StartNew();
             await udp.SendAsync(packet, packet.Length);
-            var receive = udp.ReceiveAsync().AsTask();
+            var receive = udp.ReceiveAsync();
             if (await Task.WhenAny(receive, Task.Delay(2500)) != receive)
                 return new ServerInfo(false, 0, 0, "", 0, "нет ответа: сервер выключен или закрыт UDP-порт");
             sw.Stop();

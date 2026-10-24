@@ -1,0 +1,43 @@
+name: Build VEXORIUM Launcher
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+
+permissions:
+  contents: read
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Publish launcher
+        shell: pwsh
+        run: >
+          dotnet publish ./src/VexoriumLauncher.csproj
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          -p:PublishSingleFile=true
+          -p:IncludeNativeLibrariesForSelfExtract=true
+          -p:EnableCompressionInSingleFile=true
+          -p:DebugType=None
+          -p:DebugSymbols=false
+          -o ./PLAYER_BUILD
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: VexoriumLauncher-Windows-x64
+          path: PLAYER_BUILD/VexoriumLauncher.exe
+          if-no-files-found: error
+          retention-days: 30

@@ -24,8 +24,10 @@ internal static class Program
 // ---------------------------------------------------------------- Настройки
 internal static class Config
 {
-    public const string ServerHost = "ams-game-02.centnodes.net";
-    public const int ServerPort = 40065;
+    // ИСПРАВЛЕНО: старый адрес ams-game-02.centnodes.net:40065 был неактуален.
+    // Теперь указываем реальный адрес туннеля playit.gg.
+    public const string ServerHost = "147.185.221.216";
+    public const int ServerPort = 24231;
 
     private static readonly string Dir = Path.Combine(
         Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Vexorium");
